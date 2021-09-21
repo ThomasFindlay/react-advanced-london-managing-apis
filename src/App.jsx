@@ -1,45 +1,37 @@
-import React, { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import React, { useEffect, useRef, useState } from 'react';
+import logo from './logo.svg';
+import './App.css';
+import { listUsers } from './api/usersApi';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [users, setUsers] = useState([]);
+  const abortRef = useRef(null);
+
+  const fetchUsers = async () => {
+    try {
+      console.log('abort?', abortRef.current);
+      // abortRef.current?.();
+      const response = await listUsers({
+        abort: abort => {
+          abortRef.current = abort;
+        },
+      });
+      console.log(response);
+      setUsers(response);
+    } catch (error) {
+      console.log('err', error.message, Object.keys(error));
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.jsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
+      <button onClick={fetchUsers}>Fetch</button>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
