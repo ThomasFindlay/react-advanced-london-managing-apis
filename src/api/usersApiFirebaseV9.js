@@ -27,7 +27,6 @@ export const findUsers = email => {
 
 export const addUser = user => {
   const doc = api.doc("users");
-  console.log("adding a user", doc);
   return api.setDoc(doc, {
     id: doc.id,
     ...user,
