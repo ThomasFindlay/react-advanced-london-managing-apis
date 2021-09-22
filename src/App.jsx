@@ -1,7 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import logo from "./logo.svg";
 import "./App.css";
-import { getUser, listUsers } from "./api/usersApi";
+import {
+  addUser,
+  findUsers,
+  getUser,
+  listUsers,
+} from "./api/usersApiFirebaseV9";
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -29,6 +33,12 @@ function App() {
     (async () => {
       const result = await getUser("u1WmOvm6MgQO5H0PbHPv");
       console.log("user", result);
+      const second = await findUsers("myemail@gmail.com");
+      console.log("second", second);
+      // const user = await addUser({
+      //   email: "myemail@gmail.com",
+      // });
+      // console.log("user added", user);
     })();
   }, []);
 
