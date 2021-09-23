@@ -1,16 +1,5 @@
 import api from "./apiWithFirebase";
-
-const extractDocs = async promise => {
-  const result = await promise;
-  if (result.empty) return [];
-  return result.docs.map(snap => snap.data());
-};
-
-const extractDoc = async promise => {
-  const result = await promise;
-  if (result.empty) return null;
-  return result.data();
-};
+import { extractDocs, extractDoc } from './helpers'
 
 const usersCollection = api.firestore.collection("users");
 
