@@ -1,20 +1,13 @@
-import api from "./apiWithFirebase";
-import { extractDocs, extractDoc } from './helpers'
+import api from './api';
 
-const usersCollection = api.firestore.collection("users");
-
-export const listUsers = () => {
-  return extractDocs(usersCollection.get());
+export const listUsers = config => {
+  return api.get('users', config).then(res => res.data.users)
 };
 
-export const getUser = id => {
-  return extractDoc(usersCollection.doc(id).get());
-};
+export const getUser = (userId, config) => {
+  return api.get(`users/${userId}`, config).then(res => res.data.user)
+}
 
-export const addUser = user => {
-  const doc = usersCollection.doc();
-  return doc.add({
-    id: doc.id,
-    ...user,
-  });
-};
+export const addUser = (user, config) => {
+  return api.post('users', user, config)
+}
