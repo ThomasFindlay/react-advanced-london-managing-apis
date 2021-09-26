@@ -3,10 +3,7 @@ import axios from 'axios';
 // Default config for the axios instance
 const axiosParams = {
   // Set different base URL based on the environment
-  baseURL:
-    process.env.NODE_ENV === 'development'
-      ? 'http://localhost:4000/api/'
-      : '/api/',
+  baseURL: 'http://localhost:4000/api/',
 };
 
 // Create axios instance with default params
@@ -53,4 +50,3 @@ const api = axios => {
 };
 
 export default api(axiosInstance);
-Save;

@@ -1,37 +1,42 @@
-import React, { useEffect, useRef, useState } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import { listUsers } from './api/usersApi';
+import './App.css'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import DisplayUsers from '@/components/DisplayUsers.jsx'
+import UseApiStatus from '@/components/UseApiStatus'
+import BooleanFlag from '@/components/BooleanFlag'
+import UseApi from '@/components/UseApi'
+import RequestCancellationPureAxios from '@/components/RequestCancellationPureAxios'
+import RequestCancellationApiLayer from './components/RequestCancellationApiLayer'
+import RequestCancellationApiLayerWithReactQuery from './components/RequestCancellationApiLayerWithReactQuery'
+
+const queryClient = new QueryClient()
 
 function App() {
-  const [users, setUsers] = useState([]);
-  const abortRef = useRef(null);
-
-  const fetchUsers = async () => {
-    try {
-      console.log('abort?', abortRef.current);
-      // abortRef.current?.();
-      const response = await listUsers({
-        abort: abort => {
-          abortRef.current = abort;
-        },
-      });
-      console.log(response);
-      setUsers(response);
-    } catch (error) {
-      console.log('err', error.message, Object.keys(error));
-      console.error(error);
-    }
-  };
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
   return (
-    <div className="App">
-      <button onClick={fetchUsers}>Fetch</button>
-    </div>
-  );
+    <QueryClientProvider client={queryClient}>
+      <div className="App">
+        <h1 className="font-bold text-3xl mb-8">
+          Advanced Patterns for API Management in Large-Scale React Applications
+        </h1>
+        <span>
+          <a
+            className="hover:underline text-blue-900"
+            href="https://twitter.com/thomasfindlay94"
+            target="_blank"
+            rel="noreferrer"
+          >
+            By Thomas Findlay
+          </a>
+        </span>
+        <DisplayUsers />
+        <BooleanFlag />
+        <UseApiStatus />
+        <UseApi />
+        <RequestCancellationPureAxios />
+        <RequestCancellationApiLayer />
+        <RequestCancellationApiLayerWithReactQuery />
+      </div>
+    </QueryClientProvider>
+  )
 }
 
-export default App;
+export default App
