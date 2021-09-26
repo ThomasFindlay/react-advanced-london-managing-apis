@@ -11,6 +11,12 @@ const RequestCancellationApiLayerWithReactQuery = (props) => {
       const promise = searchQuotes(query, {
         abort: (abort) => (cancel = abort),
       })
+      promise.catch((error) => {
+        if (error.aborted) {
+          console.warn('REQUEST ABORTED!')
+        }
+        throw error
+      })
       promise.cancel = cancel
       return promise
     },
